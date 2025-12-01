@@ -1,4 +1,5 @@
 # 2025/day01/day01.py
+from pytokens.cli import find_all_python_files
 
 
 def read_input(file_path):
@@ -12,7 +13,25 @@ def parse_data(raw_data):
 
 
 def solve_part1(data):
-    return "Part 1 Solution"
+    dial_size = 100
+    dial_position = 50
+    zero_dial_count = 0
+
+    for line in data:
+        direction = line[0]
+        amount = int(line[1:])
+
+        if direction == "R":
+            turning_amount = amount
+        else:
+            turning_amount = -amount
+
+        dial_position = (dial_position + turning_amount) % dial_size
+
+        if dial_position == 0:
+            zero_dial_count += 1
+
+    return zero_dial_count
 
 
 def solve_part2(data):
