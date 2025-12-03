@@ -1,3 +1,6 @@
+from turtledemo.clock import current_day
+
+
 def read_input(file_path):
     with open(file_path, "r") as f:
         return f.read().strip()
@@ -41,7 +44,29 @@ def solve_part1(data):
 
 
 def solve_part2(data):
-    return "sol2"
+    # solved the puzzle with Dynamic Programming, explained with OPT() in comments
+    total_output_joltage = 0
+    joltage_output_length = 12
+
+    for line in data:
+        current_max_joltage_str = line[:joltage_output_length]
+
+        for next_digit in line[joltage_output_length:]:
+            # temporary state: OPT(i-1) + next_digit
+            extended_sequence = current_max_joltage_str + next_digit
+
+            for i in range(joltage_output_length):
+                # if this is never true the sequence is strictly decreasing, resulting in a unchanged OPT(i)
+                if extended_sequence[i] < extended_sequence[i + 1]:
+                    # update OPT(i)
+                    current_max_joltage_str = (
+                        extended_sequence[:i] + extended_sequence[i + 1 :]
+                    )
+                    break
+
+        total_output_joltage += int(current_max_joltage_str)
+
+    return total_output_joltage
 
 
 if __name__ == "__main__":
