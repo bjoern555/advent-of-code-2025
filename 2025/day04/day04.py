@@ -47,7 +47,53 @@ def solve_part1(data):
 
 
 def solve_part2(data):
-    return "sol2"
+    accessible_rolls = 0
+
+    rows = len(data)
+    cols = len(data[0])
+
+    matrix = [list(row) for row in data]
+
+    while True:
+        to_remove = []
+
+        for row in range(rows):
+            for col in range(cols):
+                if matrix[row][col] == "@":
+                    roll_counter = 0
+
+                    if row != 0 and col != 0 and matrix[row - 1][col - 1] == "@":
+                        roll_counter += 1
+                    if row != 0 and matrix[row - 1][col] == "@":
+                        roll_counter += 1
+                    if row != 0 and col != cols - 1 and matrix[row - 1][col + 1] == "@":
+                        roll_counter += 1
+                    if col != cols - 1 and matrix[row][col + 1] == "@":
+                        roll_counter += 1
+                    if (
+                        row != rows - 1
+                        and col != cols - 1
+                        and matrix[row + 1][col + 1] == "@"
+                    ):
+                        roll_counter += 1
+                    if row != rows - 1 and matrix[row + 1][col] == "@":
+                        roll_counter += 1
+                    if row != rows - 1 and col != 0 and matrix[row + 1][col - 1] == "@":
+                        roll_counter += 1
+                    if col != 0 and matrix[row][col - 1] == "@":
+                        roll_counter += 1
+
+                    if roll_counter < 4:
+                        accessible_rolls += 1
+                        to_remove.append([row, col])
+
+        if not to_remove:
+            break
+
+        for row, col in to_remove:
+            matrix[row][col] = "."
+
+    return accessible_rolls
 
 
 if __name__ == "__main__":
