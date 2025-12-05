@@ -34,7 +34,34 @@ def solve_part1(data):
 
 
 def solve_part2(data):
-    return "sol2"
+
+    ranges = []
+
+    for line in data:
+        if line == "":
+            break
+        start_str, end_str = line.split("-")
+        ranges.append((int(start_str), int(end_str)))
+
+    ranges.sort()
+
+    merged_range = list(ranges[0])
+    fresh_ids = 0
+
+    for range_tuple in ranges[1:]:
+        start, end = range_tuple
+
+        if end <= merged_range[1]:
+            continue
+        elif start <= merged_range[1]:
+            merged_range[1] = end
+        else:
+            fresh_ids += merged_range[1] - merged_range[0] + 1
+            merged_range = [start, end]
+
+    fresh_ids += merged_range[1] - merged_range[0] + 1
+
+    return fresh_ids
 
 
 if __name__ == "__main__":
