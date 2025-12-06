@@ -37,7 +37,42 @@ def solve_part1(data):
 
 
 def solve_part2(data):
-    return "sol2"
+    parsed_lines = [line.split() for line in data]
+
+    operators = parsed_lines[-1]
+    data = data[:-1]
+
+    str_numbers = []
+    cols = len(data[0]) + 1
+
+    for col in range(cols):
+        str_number = ""
+        for row in data:
+            if len(row) > col:
+                str_number = str_number + row[col]
+        str_numbers.append(str_number.strip())
+
+    total = 0
+    operation_index = 0
+    partial_total = 0
+
+    for number in str_numbers:
+
+        if not number:
+            operation_index += 1
+            total += partial_total
+            partial_total = 0
+            continue
+
+        if operators[operation_index] == "+":
+            partial_total += int(number)
+        else:
+            if partial_total == 0:
+                partial_total = 1
+
+            partial_total *= int(number)
+
+    return total
 
 
 if __name__ == "__main__":
