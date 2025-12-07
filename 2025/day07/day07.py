@@ -46,7 +46,30 @@ def solve_part1(data):
 
 
 def solve_part2(data):
-    return "sol2"
+    beam_ids = defaultdict(int)
+
+    for col in range(len(data[0])):
+        if data[:1][0][col] == "S":
+            beam_ids[col] += 1
+
+    for row in data[1:]:
+        next_beams = defaultdict(int)
+
+        for beam_id, beams_at_id in beam_ids.items():
+            if row[beam_id] == "^":
+
+                next_beams[beam_id + 1] += beams_at_id
+
+                next_beams[beam_id - 1] += beams_at_id
+
+            else:
+                next_beams[beam_id] += beams_at_id
+
+        beam_ids = next_beams
+
+    timelines = sum(beam_ids.values())
+
+    return timelines
 
 
 if __name__ == "__main__":
