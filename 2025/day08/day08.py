@@ -62,7 +62,64 @@ def solve_part1(data):
 
 
 def solve_part2(data):
-    return "sol2"
+    shortest_points = []
+
+    for point in data:
+        x, y, z = map(int, point.split(","))
+
+        for comparison_point in data:
+            if comparison_point == point:
+                continue
+
+            x2, y2, z2 = map(int, comparison_point.split(","))
+
+            shortest_points.append(
+                (
+                    (x2 - x) ** 2 + (y2 - y) ** 2 + (z2 - z) ** 2,
+                    point,
+                    comparison_point,
+                )
+            )
+
+    shortest_points.sort()
+    shortest_points = [(p1, p2) for _, p1, p2 in shortest_points[::2]]
+
+    groups = []
+    num_groups = len(data)
+
+    for p1, p2 in shortest_points:
+        idx1 = -1
+        idx2 = -1
+
+        for i, group in enumerate(groups):
+            if p1 in group:
+                idx1 = i
+            if p2 in group:
+                idx2 = i
+
+        if idx1 != -1 and idx1 == idx2:
+            continue
+
+        num_groups -= 1
+
+        if idx1 == -1 and idx2 == -1:
+            groups.append([p1, p2])
+        elif idx1 != -1 and idx2 == -1:
+            groups[idx1].append(p2)
+        elif idx1 == -1 and idx2 != -1:
+            groups[idx2].append(p1)
+        elif idx1 != idx2:
+            if idx1 > idx2:
+                groups[idx2].extend(groups[idx1])
+                groups.pop(idx1)
+            else:
+                groups[idx1].extend(groups[idx2])
+                groups.pop(idx2)
+
+        if num_groups == 1:
+            x1 = int(p1.split(",")[0])
+            x2 = int(p2.split(",")[0])
+            return x1 * x2
 
 
 if __name__ == "__main__":
