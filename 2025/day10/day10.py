@@ -1,3 +1,6 @@
+from collections import deque
+
+
 def read_input(file_path):
     with open(file_path, "r") as f:
         return f.read().strip()
@@ -74,7 +77,7 @@ def solve_part1(data):
 
 
 def solve_part2(data):
-    return "sol2"
+    return "was not able to do it"
 
 
 if __name__ == "__main__":
@@ -86,5 +89,5 @@ if __name__ == "__main__":
     result1 = solve_part1(parsed_data)
     result2 = solve_part2(parsed_data)
 
-    print(f"Day 09 - Part 1: {result1}")
-    print(f"Day 09 - Part 2: {result2}")
+    print(f"Day 10 - Part 1: {result1}")
+    print(f"Day 1o - Part 2: {result2}")
