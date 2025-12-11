@@ -21,7 +21,21 @@ def solve_part1(data):
 
 
 def solve_part2(data):
-    return "sol2"
+    node_map = {}
+    for line in data:
+        node, neighbors = line.split(":")
+        neighbors = neighbors.split(" ")[1:]
+        node_map[node] = neighbors
+
+    svr_to_fft = count_paths_to_target("svr", "fft", node_map, blocked=["dac", "out"])
+    fft_to_dac = count_paths_to_target("fft", "dac", node_map, blocked=["svr", "out"])
+    dac_to_out = count_paths_to_target("dac", "out", node_map, blocked=["svr", "fft"])
+
+    svr_to_dac = count_paths_to_target("svr", "dac", node_map, blocked=["fft", "out"])
+    dac_to_fft = count_paths_to_target("dac", "fft", node_map, blocked=["svr", "out"])
+    fft_to_out = count_paths_to_target("fft", "out", node_map, blocked=["dac", "svr"])
+
+    return svr_to_fft * fft_to_dac * dac_to_out + svr_to_dac * dac_to_fft * fft_to_out
 
 
 def count_paths_to_target(start, target, node_map, blocked=None):
